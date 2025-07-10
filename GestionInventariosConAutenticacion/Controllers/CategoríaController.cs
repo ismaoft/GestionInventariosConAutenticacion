@@ -20,9 +20,21 @@ namespace GestionInventariosConAutenticacion.Controllers
         }
 
         // GET: Categoría
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Categoría.ToListAsync());
+            if (_context.Categoría == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Movie'  is null.");
+            }
+
+            var categorias = from c in _context.Categoría
+                         select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                categorias = categorias.Where(s => s.Nombre!.ToUpper().Contains(searchString.ToUpper()));
+            }
+            return View(await categorias.ToListAsync());
         }
 
         // GET: Categoría/Details/5
