@@ -1,32 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GestionInventariosConAutenticacion.Data;
+using GestionInventariosConAutenticacion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GestionInventariosConAutenticacion.Data;
-using GestionInventariosConAutenticacion.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GestionInventariosConAutenticacion.Controllers
 {
-    public class ProductoesController : Controller
+    public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductoesController(ApplicationDbContext context)
+        public ProductosController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Productoes
+        // GET: Productos
         public async Task<IActionResult> Index()
         {
             var gestionInventariosConAutenticacionContext = _context.Producto.Include(p => p.Categoría);
             return View(await gestionInventariosConAutenticacionContext.ToListAsync());
         }
 
-        // GET: Productoes/Details/5
+        // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,16 +46,18 @@ namespace GestionInventariosConAutenticacion.Controllers
             return View(producto);
         }
 
-        // GET: Productoes/Create
+        // GET: Productos/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CategoríaId"] = new SelectList(_context.Categoría, "Id", "Id");
             return View();
         }
 
-        // POST: Productoes/Create
+        // POST: Productos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripción,Precio,Cantidad,CategoríaId")] Producto producto)
@@ -69,7 +72,8 @@ namespace GestionInventariosConAutenticacion.Controllers
             return View(producto);
         }
 
-        // GET: Productoes/Edit/5
+        // GET: Productos/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,9 +90,10 @@ namespace GestionInventariosConAutenticacion.Controllers
             return View(producto);
         }
 
-        // POST: Productoes/Edit/5
+        // POST: Productos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripción,Precio,Cantidad,CategoríaId")] Producto producto)
@@ -122,7 +127,8 @@ namespace GestionInventariosConAutenticacion.Controllers
             return View(producto);
         }
 
-        // GET: Productoes/Delete/5
+        // GET: Productos/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,7 +147,8 @@ namespace GestionInventariosConAutenticacion.Controllers
             return View(producto);
         }
 
-        // POST: Productoes/Delete/5
+        // POST: Productos/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GestionInventariosConAutenticacion.Data;
+using GestionInventariosConAutenticacion.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GestionInventariosConAutenticacion.Data;
-using GestionInventariosConAutenticacion.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GestionInventariosConAutenticacion.Controllers
 {
@@ -56,6 +57,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         }
 
         // GET: Categoría/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -64,6 +66,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         // POST: Categoría/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripción")] Categoría categoría)
@@ -78,6 +81,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         }
 
         // GET: Categoría/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +100,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         // POST: Categoría/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripción")] Categoría categoría)
@@ -129,6 +134,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         }
 
         // GET: Categoría/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,6 +153,7 @@ namespace GestionInventariosConAutenticacion.Controllers
         }
 
         // POST: Categoría/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
